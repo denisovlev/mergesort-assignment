@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
@@ -30,6 +31,46 @@ public class Main {
         testInputStream(is4);
 
         testMultiWayMerge();
+
+        testSplitter(new MyInputStream1Factory());
+        testSplitter(new MyInputStream2Factory());
+        testSplitter(new MyInputStream3Factory());
+        testSplitter(new MyInputStream4Factory());
+
+        generateRandomData(1000);
+        testMergeSort(new MyInputStream4Factory(), new MyOutputStream4Factory());
+    }
+
+    private static void generateRandomData(int count) throws IOException {
+        MyOutputStream1 out = new MyOutputStream1();
+        out.create("results/test_data.data");
+        for (int i = 0; i < count; i++) {
+            out.write(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
+        }
+        out.close();
+    }
+
+    private static void testMergeSort(InputStreamFactory inputFactory,
+                                      OutputStreamFactory outputFactory) throws IOException {
+        System.out.println("Merge sort test:");
+        MergeSort sort = new MergeSort(inputFactory, outputFactory);
+        MyInputStream in = sort.sort("results/test_data.data", 10, 3);
+        while (!in.end_of_stream()) {
+            System.out.println(in.read_next());
+        }
+    }
+
+    private static void testSplitter(InputStreamFactory factory) throws IOException {
+        System.out.println("Splitter test:");
+        String inputFilename = "test/test_merge_data.data";
+        StreamSplitter s = new StreamSplitter(factory);
+        MyInputStream[] streams = s.split(inputFilename, 3);
+        for (MyInputStream stream : streams) {
+            System.out.println(stream.getClass().getSimpleName());
+            System.out.println(stream.read_next());
+            System.out.println(stream.read_next());
+            System.out.println(stream.read_next());
+        }
     }
 
     private static void testMultiWayMerge() throws IOException {
@@ -47,8 +88,7 @@ public class Main {
         out.create(outFilename);
 
         MultiWayMerger merger = new MultiWayMerger(streams, out);
-        out = merger.merge();
-        out.close();
+        merger.merge();
 
         MyInputStream is = new MyInputStream1();
         is.open(outFilename);

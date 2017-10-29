@@ -25,6 +25,7 @@ public class MultiWayMerger {
             if (elem.fetchValue()) queue.add(elem);
         }
 
+        out.close();
         return out;
     }
 }
@@ -33,7 +34,7 @@ class StreamValueWrapper implements Comparable<StreamValueWrapper> {
     private MyInputStream stream;
     private int value;
 
-    StreamValueWrapper(MyInputStream stream) {
+    public StreamValueWrapper(MyInputStream stream) {
         this.stream = stream;
     }
 

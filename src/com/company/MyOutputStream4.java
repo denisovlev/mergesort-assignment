@@ -7,19 +7,20 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class MyOutputStream4 extends MyOutputStream1 {
-    private File f;
+public class MyOutputStream4 implements MyOutputStream {
     private FileOutputStream fs;
     private FileChannel channel;
     private ByteBuffer buf;
 
+    @Override
     public void create(String filename) throws FileNotFoundException {
-        this.f = new File(filename);
+        File f = new File(filename);
         this.fs = new FileOutputStream(f);
         this.channel = fs.getChannel();
         this.buf = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
     }
 
+    @Override
     public void write(int element) throws IOException {
         buf.clear();
         buf.putInt(element);
@@ -27,6 +28,7 @@ public class MyOutputStream4 extends MyOutputStream1 {
         channel.write(buf);
     }
 
+    @Override
     public void close() throws IOException {
         channel.force(false);
         fs.close();

@@ -2,37 +2,53 @@ package com.company;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class MyInputStream4 extends MyInputStream1 {
-    private FileInputStream is;
+public class MyInputStream4 implements MyInputStream {
     private FileChannel channel;
     private boolean eof = false;
     private ByteBuffer buf;
+    private long limit = -1;
+    private long readCount = 0;
+    private String filename;
 
-    public void open(String filename) throws FileNotFoundException {
+    @Override
+    public void open(String filename, long offset, long limit) throws IOException {
         File f = new File(filename);
-        this.is = new FileInputStream(f);
+        FileInputStream is = new FileInputStream(f);
+        long bytesToSkip = offset * Integer.SIZE / Byte.SIZE;
+        long skipped = is.skip(bytesToSkip);
+        if (skipped != bytesToSkip) throw new IndexOutOfBoundsException();
         this.channel = is.getChannel();
         this.buf = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
+        this.limit = limit;
+        this.filename = filename;
     }
 
     public int read_next() throws IOException {
-        int read = channel.read(buf);
-        if (read == -1) {
+        if (isLimitReached() || ((channel.read(buf)) == -1)) {
             this.eof = true;
             return -1;
         }
+        readCount += 1;
         buf.rewind();
         int res = buf.getInt();
         buf.clear();
         return res;
     }
 
+    private boolean isLimitReached() {
+        return limit > 0 && limit <= readCount;
+    }
+
     public boolean end_of_stream() {
         return this.eof;
+    }
+
+    @Override
+    public String getFilename() {
+        return filename;
     }
 }
