@@ -19,9 +19,22 @@ class MyOutputStream2Factory implements OutputStreamFactory {
 }
 
 class MyOutputStream3Factory implements OutputStreamFactory {
+    private int bufferSize;
+
+    public MyOutputStream3Factory() {
+        this(8192 * 2);
+    }
+
+    public MyOutputStream3Factory(int bufferSize) {
+        this.bufferSize = bufferSize;
+    }
+
     @Override
     public MyOutputStream produce() {
-        return new MyOutputStream3();
+
+        MyOutputStream3 stream = new MyOutputStream3();
+        stream.setBufferSize(bufferSize);
+        return stream;
     }
 }
 

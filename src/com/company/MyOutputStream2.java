@@ -9,7 +9,5 @@ public class MyOutputStream2 extends MyOutputStream1 {
         return new BufferedOutputStream(fs, getBufferSize());
     }
 
-    protected int getBufferSize() {
-        return 8192;
-    }
+    public int getBufferSize() { return 8192; }
 }

@@ -18,13 +18,17 @@ public class MyInputStream4 implements MyInputStream {
     public void open(String filename, long offset, long limit) throws IOException {
         File f = new File(filename);
         FileInputStream is = new FileInputStream(f);
-        long bytesToSkip = offset * Integer.SIZE / Byte.SIZE;
-        long skipped = is.skip(bytesToSkip);
-        if (skipped != bytesToSkip) throw new IndexOutOfBoundsException();
+        skipElements(is, offset);
         this.channel = is.getChannel();
         this.buf = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
         this.limit = limit;
         this.filename = filename;
+    }
+
+    private void skipElements(FileInputStream is, long offset) throws IOException {
+        long bytesToSkip = offset * Integer.SIZE / Byte.SIZE;
+        long skipped = is.skip(bytesToSkip);
+        if (skipped != bytesToSkip) throw new IndexOutOfBoundsException();
     }
 
     public int read_next() throws IOException {

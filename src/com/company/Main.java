@@ -38,7 +38,7 @@ public class Main {
         testSplitter(new MyInputStream4Factory());
 
         generateRandomData(1000);
-        testMergeSort(new MyInputStream4Factory(), new MyOutputStream4Factory());
+        testMergeSort(new MyInputStream3Factory(32768), new MyOutputStream3Factory(32768));
     }
 
     private static void generateRandomData(int count) throws IOException {
