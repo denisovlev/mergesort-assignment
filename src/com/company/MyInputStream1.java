@@ -8,6 +8,7 @@ public class MyInputStream1 implements MyInputStream {
     private long limit = -1;
     private long readCount = 0;
     private String filename;
+    protected final int DEFAULT_BUFFER_SIZE = 8192; //default java buffered input stream. static var in java has private access
 
     @Override
     public void open(String filename, long offset, long limit) throws IOException {

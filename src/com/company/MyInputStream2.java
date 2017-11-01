@@ -9,5 +9,7 @@ public class MyInputStream2 extends MyInputStream1 {
         return new BufferedInputStream(fs, getBufferSize());
     }
 
-    public int getBufferSize() { return 8192; }
+    public int getBufferSize() {
+        return DEFAULT_BUFFER_SIZE;
+    }
 }

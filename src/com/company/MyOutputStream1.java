@@ -5,6 +5,7 @@ import java.io.*;
 public class MyOutputStream1 implements MyOutputStream {
     private OutputStream fs;
     private DataOutputStream ds;
+    protected final int DEFAULT_BUFFER_SIZE = 8192; //default java buffered input stream. static var in java has private access
 
     @Override
     public void create(String filename) throws FileNotFoundException {
