@@ -1,11 +1,24 @@
 package com.company;
 
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Param;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
+@State(Scope.Thread)
 public class Main {
+    @Param({"10", "20"})
+    private static int M;
 
-    public static void main(String[] args) throws IOException {
+    @Param({"3"})
+    private static int d;
+    private static void test() throws IOException{
         MyOutputStream out = new MyOutputStream1();
         testOutputStream(out);
 
@@ -36,9 +49,20 @@ public class Main {
         testSplitter(new MyInputStream2Factory());
         testSplitter(new MyInputStream3Factory());
         testSplitter(new MyInputStream4Factory());
+    }
 
+    @Benchmark
+    public static void testMergeSort3() throws IOException{
+        testMergeSort(new MyInputStream3Factory(32768),
+                        new MyOutputStream3Factory(32768), M, d);
+    }
+
+    public static void main(String[] args) throws Exception {
         generateRandomData(1000);
-        testMergeSort(new MyInputStream3Factory(32768), new MyOutputStream3Factory(32768));
+        Options options = new OptionsBuilder()
+                .include(Main.class.getSimpleName()).forks(1).build();
+
+        new Runner(options).run();
     }
 
     private static void generateRandomData(int count) throws IOException {
@@ -51,13 +75,9 @@ public class Main {
     }
 
     private static void testMergeSort(InputStreamFactory inputFactory,
-                                      OutputStreamFactory outputFactory) throws IOException {
-        System.out.println("Merge sort test:");
+                                      OutputStreamFactory outputFactory, int M, int d) throws IOException {
         MergeSort sort = new MergeSort(inputFactory, outputFactory);
-        MyInputStream in = sort.sort("results/test_data.data", 10, 3);
-        while (!in.end_of_stream()) {
-            System.out.println(in.read_next());
-        }
+        MyInputStream in = sort.sort("results/test_data.data", M, d);
     }
 
     private static void testSplitter(InputStreamFactory factory) throws IOException {
