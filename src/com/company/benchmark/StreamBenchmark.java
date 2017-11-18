@@ -3,6 +3,7 @@ package com.company.benchmark;
 import com.company.StreamTuple;
 import com.company.manager.StreamManager;
 
+import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
@@ -17,14 +18,14 @@ public class StreamBenchmark {
 
     private static StreamManager manager = StreamManager.getInstance();
 
-    @Param({ "0", "1", "2", "3" })
+    @Param({ "0" })
     private static int stream_type;
 
     @Param({ "100", "1000", "10000", "10000" })
     private static int N;
 
-    private static void test() {
-
+    @Benchmark
+    public static void test() {
         for (int i = 0; i <= stream_type; i++) {
             for (int k = 1; k <= 30; k++) {
                 long startTime = System.nanoTime();
@@ -45,7 +46,7 @@ public class StreamBenchmark {
                 streams.forEach(StreamTuple::close);
                 long finishTime = System.nanoTime();
                 double runTime = (finishTime - startTime) / 1000000000.0;
-                System.out.printf("Experiment with k = %d, N = %d, time = %f\n ", k, N, runTime);
+                //System.out.printf("Experiment with k = %d, N = %d, time = %f\n ", k, N, runTime);
             }
         }
     }
