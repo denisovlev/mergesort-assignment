@@ -13,12 +13,14 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @State(Scope.Thread)
 public class Main {
-    @Param({"10", "20"})
+
+    @Param({ "10", "20" })
     private static int M;
 
-    @Param({"3"})
+    @Param({ "3" })
     private static int d;
-    private static void test() throws IOException{
+
+    private static void test() throws IOException {
         MyOutputStream out = new MyOutputStream1();
         testOutputStream(out);
 
@@ -52,15 +54,13 @@ public class Main {
     }
 
     @Benchmark
-    public static void testMergeSort3() throws IOException{
-        testMergeSort(new MyInputStream3Factory(32768),
-                        new MyOutputStream3Factory(32768), M, d);
+    public static void testMergeSort3() throws IOException {
+        testMergeSort(new MyInputStream3Factory(32768), new MyOutputStream3Factory(32768), M, d);
     }
 
     public static void main(String[] args) throws Exception {
         generateRandomData(1000);
-        Options options = new OptionsBuilder()
-                .include(Main.class.getSimpleName()).forks(1).build();
+        Options options = new OptionsBuilder().include(Main.class.getSimpleName()).forks(1).build();
 
         new Runner(options).run();
     }
@@ -75,7 +75,7 @@ public class Main {
     }
 
     private static void testMergeSort(InputStreamFactory inputFactory,
-                                      OutputStreamFactory outputFactory, int M, int d) throws IOException {
+        OutputStreamFactory outputFactory, int M, int d) throws IOException {
         MergeSort sort = new MergeSort(inputFactory, outputFactory);
         MyInputStream in = sort.sort("results/test_data.data", M, d);
     }
@@ -98,10 +98,7 @@ public class Main {
         String inputFilename = "test/test_data.data";
         String outFilename = "test/test_merge_data.data";
         MyInputStream[] streams = {
-                new MyInputStream1(),
-                new MyInputStream1(),
-                new MyInputStream1(),
-                new MyInputStream1()
+            new MyInputStream1(), new MyInputStream1(), new MyInputStream1(), new MyInputStream1()
         };
         MyOutputStream out = new MyOutputStream1();
         for (MyInputStream elem : streams) elem.open(inputFilename);

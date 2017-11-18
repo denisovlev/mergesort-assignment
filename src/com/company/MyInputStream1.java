@@ -14,6 +14,7 @@ public class MyInputStream1 implements MyInputStream {
     public void open(String filename, long offset, long limit) throws IOException {
         File f = new File(filename);
         InputStream is = getStream(f);
+
         long bytesToSkip = offset * Integer.SIZE / Byte.SIZE;
         long skipped = is.skip(bytesToSkip);
         if (skipped != bytesToSkip) throw new IndexOutOfBoundsException();
