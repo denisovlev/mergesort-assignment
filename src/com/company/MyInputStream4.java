@@ -1,46 +1,56 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class MyInputStream4 implements MyInputStream {
+public class MyInputStream4 extends MyInputStream3 {
     private FileChannel channel;
     private boolean eof = false;
-    private ByteBuffer buf;
+    private MappedByteBuffer buf;
     private long limit = -1;
     private long readCount = 0;
     private String filename;
+    private long offset;
 
     @Override
     public void open(String filename, long offset, long limit) throws IOException {
-        File f = new File(filename);
-        FileInputStream is = new FileInputStream(f);
-        skipElements(is, offset);
-        this.channel = is.getChannel();
-        this.buf = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
+        RandomAccessFile f = new RandomAccessFile(filename, "rw");
+        this.channel = f.getChannel();
+        this.offset = offset;
         this.limit = limit;
+        if (limit < 0) {
+            this.limit = (channel.size() * Byte.SIZE) / Integer.SIZE;
+        }
+        if (countInBytes(limit) > (channel.size() - countInBytes(offset))) {
+            this.limit = ((channel.size() - countInBytes(offset)) * Byte.SIZE) / Integer.SIZE;
+        }
         this.filename = filename;
+        remapBuffer(countInBytes(readCount + offset));
     }
 
-    private void skipElements(FileInputStream is, long offset) throws IOException {
-        long bytesToSkip = offset * Integer.SIZE / Byte.SIZE;
-        long skipped = is.skip(bytesToSkip);
-        if (skipped != bytesToSkip) throw new IndexOutOfBoundsException();
+    private long countInBytes(long count) {
+        return count * Integer.SIZE / Byte.SIZE;
+    }
+
+    private void remapBuffer(long position) throws IOException {
+        long channelSize = channel.size() - position;
+        long size = channelSize < countInBytes(bufferSize) ? channelSize : countInBytes(bufferSize);
+        buf = channel.map(FileChannel.MapMode.READ_ONLY, position, size);
+        buf.load();
     }
 
     public int read_next() throws IOException {
-        if (isLimitReached() || ((channel.read(buf)) == -1)) {
+        if (isLimitReached()) {
             this.eof = true;
             return -1;
         }
+        if (buf.remaining() < 1) {
+            remapBuffer(countInBytes(readCount + offset));
+        }
         readCount += 1;
-        buf.rewind();
-        int res = buf.getInt();
-        buf.clear();
-        return res;
+        return buf.getInt();
     }
 
     private boolean isLimitReached() {

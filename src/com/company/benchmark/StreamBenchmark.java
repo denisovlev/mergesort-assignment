@@ -27,7 +27,7 @@ public class StreamBenchmark {
     @Benchmark
     public static void test() {
         for (int i = 0; i <= stream_type; i++) {
-            for (int k = 1; k <= 30; k++) {
+            for (int k = 1; k <= 30; k += 5) {
                 long startTime = System.nanoTime();
                 ArrayList<StreamTuple> streams = new ArrayList<>();
                 for (int l = 1; l <= k; l++) {

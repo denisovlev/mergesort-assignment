@@ -2,7 +2,7 @@ package com.company;
 
 public class MyInputStream3 extends MyInputStream2 {
 
-    private int bufferSize = DEFAULT_BUFFER_SIZE * 2;
+    protected int bufferSize = DEFAULT_BUFFER_SIZE * 2;
 
     @Override
     public int getBufferSize() {
