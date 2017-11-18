@@ -8,7 +8,7 @@ public class MyOutputStream1 implements MyOutputStream {
     protected final int DEFAULT_BUFFER_SIZE = 8192; //default java buffered input stream. static var in java has private access
 
     @Override
-    public void create(String filename) throws FileNotFoundException {
+    public void create(String filename) throws IOException {
         File f = new File(filename);
         this.fs = getStream(f);
         this.ds = new DataOutputStream(fs);

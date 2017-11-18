@@ -48,7 +48,7 @@ public class MergeSort {
         //stops when the sorted streams is already 1 file
         while ((n = sortedStreams.size()) > 1) {
             currentMergeNumber++;
-            int streamsCount = (d < n)? d : n;
+            int streamsCount = (d < n) ? d : n;
 
             //get currently sorted streams to be merged
             MyInputStream[] streamsToMerge = getSortedStreams(streamsCount);
