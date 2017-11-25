@@ -2,7 +2,6 @@ package com.company.benchmark;
 
 import com.company.StreamTuple;
 import com.company.manager.StreamManager;
-
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.streams;
 
 import java.io.*;
 
@@ -26,6 +26,7 @@ public class MyOutputStream1 implements MyOutputStream {
     @Override
     public void close() throws IOException {
         ds.flush();
+        ds.close();
         fs.close();
     }
 }

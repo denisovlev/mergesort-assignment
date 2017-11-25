@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.factory.*;
+import com.company.streams.*;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;

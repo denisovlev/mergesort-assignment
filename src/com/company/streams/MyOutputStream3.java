@@ -1,6 +1,6 @@
-package com.company;
+package com.company.streams;
 
-public class MyInputStream3 extends MyInputStream2 {
+public class MyOutputStream3 extends MyOutputStream2 {
 
     protected int bufferSize = DEFAULT_BUFFER_SIZE * 2;
 
@@ -10,6 +10,6 @@ public class MyInputStream3 extends MyInputStream2 {
     }
 
     public void setBufferSize(int bufferSize) {
-        this.bufferSize =  bufferSize;
+        this.bufferSize = bufferSize;
     }
 }

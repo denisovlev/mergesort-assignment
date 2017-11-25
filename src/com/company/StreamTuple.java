@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.streams.MyInputStream;
+import com.company.streams.MyOutputStream;
+
 import java.io.IOException;
 
 /**

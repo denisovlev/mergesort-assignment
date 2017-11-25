@@ -1,5 +1,10 @@
 package com.company;
 
+import com.company.factory.InputStreamFactory;
+import com.company.factory.OutputStreamFactory;
+import com.company.streams.MyInputStream;
+import com.company.streams.MyOutputStream;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;

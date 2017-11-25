@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.factory.InputStreamFactory;
+import com.company.streams.MyInputStream;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
