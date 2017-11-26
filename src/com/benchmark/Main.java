@@ -10,17 +10,13 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        //        System.out.println("Generating data");
-        //        generateData(10000000, 30);
-        //        generateData(100000000, 30);
-        //        generateMergesortData(1000);
-        //        generateMergesortData(1000000);
         System.out.println("Running test");
 
         Options outputStreamTestConfig =
@@ -33,6 +29,7 @@ public class Main {
                 .build();
 
         new Runner(outputStreamTestConfig).run();
+        renameResultsFile("output_stream_jmh_result.csv");
 
         Options inputStreamTestConfig =
             new OptionsBuilder().include(com.benchmark.InputStreamBenchmark.class.getSimpleName())
@@ -44,6 +41,7 @@ public class Main {
                 .build();
 
         new Runner(inputStreamTestConfig).run();
+        renameResultsFile("input_stream_jmh_result.csv");
 
         Options mergeSortTestConfig =
             new OptionsBuilder().include(com.benchmark.MergeSortBenchmark.class.getSimpleName())
@@ -55,6 +53,11 @@ public class Main {
                 .build();
 
         new Runner(mergeSortTestConfig).run();
+        renameResultsFile("merge_stream_jmh_result.csv");
+    }
+
+    private static void renameResultsFile(String pathname) {
+        new File("jmh-result.csv").renameTo(new File(pathname));
     }
 
     private static void generateData(int length, int nFiles) throws IOException {
@@ -63,8 +66,7 @@ public class Main {
             MyOutputStream out = new MyOutputStream4();
             out.create(filename);
             for (int j = 0; j < length; j++) {
-                out.write(
-                    ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
+                out.write(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
             }
             out.close();
         }
