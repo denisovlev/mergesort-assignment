@@ -21,27 +21,29 @@ public class MergeSort {
     private InputStreamFactory inputStreamFactory;
     private OutputStreamFactory outputStreamFactory;
     private int[] sortBuffer; //help buffer for sort individual stream
+    private String filename;
+    private int M, d;
 
     /**
      * Constructor
      * @param inputStreamFactory Factory for input stream
      * @param outputStreamFactory Factory for output stream
      */
-    public MergeSort(InputStreamFactory inputStreamFactory, OutputStreamFactory outputStreamFactory) {
+    public MergeSort(InputStreamFactory inputStreamFactory, OutputStreamFactory outputStreamFactory, String filename, int M, int d) {
         this.inputStreamFactory = inputStreamFactory;
         this.outputStreamFactory = outputStreamFactory;
         sortedStreams = new LinkedList<>();
+        this.filename = filename;
+        this.M = M;
+        this.d = d;
     }
 
     /**
      * Sort the input streams
-     * @param filename Filename
-     * @param M M
-     * @param d d
      * @return Sorted stream
      * @throws IOException
      */
-    public MyInputStream sort(String filename, int M, int d) throws IOException {
+    public MyInputStream sort() throws IOException {
         sortBuffer = new int[M];
         StreamSplitter s = new StreamSplitter(inputStreamFactory);
 

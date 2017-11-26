@@ -1,6 +1,7 @@
 package com.benchmark;
 
 import com.company.streams.MyOutputStream;
+import com.company.streams.MyOutputStream2;
 import com.company.streams.MyOutputStream4;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
@@ -15,6 +16,8 @@ public class Main {
 //        System.out.println("Generating data");
 //        generateData(10000000, 30);
 //        generateData(100000000, 30);
+//        generateMergesortData(1000);
+//        generateMergesortData(1000000);
         System.out.println("Running test");
 
         Options outputStreamTestConfig = new OptionsBuilder()
@@ -34,6 +37,15 @@ public class Main {
                 .forks(1).build();
 
         new Runner(inputStreamTestConfig).run();
+
+        Options mergeSortTestConfig = new OptionsBuilder()
+                .include(com.benchmark.MergeSortBenchmark.class.getSimpleName())
+                .warmupIterations(1)
+                .measurementIterations(5)
+                .resultFormat(ResultFormatType.CSV)
+                .forks(1).build();
+
+        new Runner(mergeSortTestConfig).run();
     }
 
     private static void generateData(int length, int nFiles) throws IOException {
@@ -46,5 +58,14 @@ public class Main {
             }
             out.close();
         }
+    }
+
+    private static void generateMergesortData(int N) throws IOException {
+        MyOutputStream out = new MyOutputStream2();
+        out.create(BenchmarkHelper.getFilename(N));
+        for (int j = 0; j < N; j++) {
+            out.write(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
+        }
+        out.close();
     }
 }

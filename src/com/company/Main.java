@@ -62,7 +62,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         generateRandomData(1000);
-        Options options = new OptionsBuilder().include(Main.class.getSimpleName()).forks(1).build();
+//        testMergeSort3();
+        Options options = new OptionsBuilder()
+                .warmupIterations(2)
+                .measurementIterations(5)
+                .include(Main.class.getSimpleName()).forks(1).build();
 
         new Runner(options).run();
     }
@@ -77,9 +81,17 @@ public class Main {
     }
 
     private static void testMergeSort(InputStreamFactory inputFactory,
-        OutputStreamFactory outputFactory, int M, int d) throws IOException {
-        MergeSort sort = new MergeSort(inputFactory, outputFactory);
-        MyInputStream in = sort.sort("results/test_data.data", M, d);
+                                      OutputStreamFactory outputFactory, int M, int d) throws IOException {
+        MergeSort sort = new MergeSort(inputFactory, outputFactory, "results/test_data.data", M, d);
+        MyInputStream in = sort.sort();
+//        printInputStream(in);
+    }
+
+    private static void printInputStream(MyInputStream inputStream) throws IOException{
+        while (!inputStream.end_of_stream()) {
+            int value = inputStream.read_next();
+            if (!inputStream.end_of_stream()) System.out.println(value);
+        }
     }
 
     private static void testSplitter(InputStreamFactory factory) throws IOException {
@@ -100,7 +112,7 @@ public class Main {
         String inputFilename = "test/test_data.data";
         String outFilename = "test/test_merge_data.data";
         MyInputStream[] streams = {
-            new MyInputStream1(), new MyInputStream1(), new MyInputStream1(), new MyInputStream1()
+                new MyInputStream1(), new MyInputStream1(), new MyInputStream1(), new MyInputStream1()
         };
         MyOutputStream out = new MyOutputStream1();
         for (MyInputStream elem : streams) elem.open(inputFilename);
