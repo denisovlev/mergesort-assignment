@@ -2,6 +2,7 @@ package com.benchmark;
 
 import com.company.streams.MyOutputStream;
 import com.company.streams.MyOutputStream2;
+import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -21,6 +22,7 @@ public class Main {
                 .include(com.benchmark.InputStreamBenchmark.class.getSimpleName())
                 .warmupIterations(2)
                 .measurementIterations(5)
+                .resultFormat(ResultFormatType.CSV)
                 .forks(1).build();
 
         new Runner(options).run();
