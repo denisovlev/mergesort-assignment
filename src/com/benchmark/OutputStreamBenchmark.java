@@ -25,14 +25,16 @@ public class OutputStreamBenchmark {
     @Param({"0", "4096", "16384", "4194304"})
     private static int B;
 
-    @Benchmark
-    public int testMyOutputStream1(Blackhole bh) throws IOException {
-        if (B != 0) return 0; // cannot configure block size for this algorithm
-        OutputStreamFactory factory = new MyOutputStream1Factory();
-        int s = runTest(factory, N, k);
-        bh.consume(s);
-        return s;
-    }
+//    MyOutputStream1 is too slow, excluding it from benchmark
+//    @Benchmark
+//    public int testMyOutputStream1(Blackhole bh) throws IOException {
+//        if (B != 0) return 0; // cannot configure block size for this algorithm
+//        if (k > 2) return 0; // too slow
+//        OutputStreamFactory factory = new MyOutputStream1Factory();
+//        int s = runTest(factory, N, k);
+//        bh.consume(s);
+//        return s;
+//    }
 
     @Benchmark
     public int testMyOutputStream2(Blackhole bh) throws IOException {

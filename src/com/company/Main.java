@@ -2,25 +2,11 @@ package com.company;
 
 import com.company.factory.*;
 import com.company.streams.*;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
-@State(Scope.Thread)
 public class Main {
-
-    @Param({ "10", "20" })
-    private static int M;
-
-    @Param({ "3" })
-    private static int d;
 
     private static void test() throws IOException {
         MyOutputStream out = new MyOutputStream1();
@@ -53,26 +39,24 @@ public class Main {
         testSplitter(new MyInputStream2Factory());
         testSplitter(new MyInputStream3Factory());
         testSplitter(new MyInputStream4Factory());
+
+        generateRandomData(1000);
+        testMergeSort();
     }
 
-    @Benchmark
-    public static void testMergeSort3() throws IOException {
-        testMergeSort(new MyInputStream3Factory(32768), new MyOutputStream3Factory(32768), M, d);
+    public static void testMergeSort() throws IOException {
+        System.out.println("Merge sort test:");
+        testMergeSort(new MyInputStream3Factory(32768),
+                new MyOutputStream3Factory(32768), 100, 3);
     }
+
 
     public static void main(String[] args) throws Exception {
-        generateRandomData(1000);
-//        testMergeSort3();
-        Options options = new OptionsBuilder()
-                .warmupIterations(2)
-                .measurementIterations(5)
-                .include(Main.class.getSimpleName()).forks(1).build();
-
-        new Runner(options).run();
+        test();
     }
 
     private static void generateRandomData(int count) throws IOException {
-        MyOutputStream1 out = new MyOutputStream1();
+        MyOutputStream out = new MyOutputStream2();
         out.create("results/test_data.data");
         for (int i = 0; i < count; i++) {
             out.write(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
@@ -84,7 +68,7 @@ public class Main {
                                       OutputStreamFactory outputFactory, int M, int d) throws IOException {
         MergeSort sort = new MergeSort(inputFactory, outputFactory, "results/test_data.data", M, d);
         MyInputStream in = sort.sort();
-//        printInputStream(in);
+        printInputStream(in);
     }
 
     private static void printInputStream(MyInputStream inputStream) throws IOException{
