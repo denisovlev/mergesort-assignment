@@ -23,7 +23,7 @@ public class Main {
             new OptionsBuilder().include(com.benchmark.OutputStreamBenchmark.class.getSimpleName())
                 .warmupIterations(1)
                 .measurementIterations(5)
-                .timeout(TimeValue.hours(3))
+                .timeout(TimeValue.hours(4))
                 .resultFormat(ResultFormatType.CSV)
                 .forks(1)
                 .build();
@@ -35,7 +35,7 @@ public class Main {
             new OptionsBuilder().include(com.benchmark.InputStreamBenchmark.class.getSimpleName())
                 .warmupIterations(1)
                 .measurementIterations(5)
-                .timeout(TimeValue.hours(3))
+                .timeout(TimeValue.hours(4))
                 .resultFormat(ResultFormatType.CSV)
                 .forks(1)
                 .build();
@@ -47,7 +47,7 @@ public class Main {
             new OptionsBuilder().include(com.benchmark.MergeSortBenchmark.class.getSimpleName())
                 .warmupIterations(1)
                 .measurementIterations(5)
-                .timeout(TimeValue.hours(3))
+                .timeout(TimeValue.hours(4))
                 .resultFormat(ResultFormatType.CSV)
                 .forks(1)
                 .build();

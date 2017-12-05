@@ -17,7 +17,9 @@ public class MyOutputStream4 extends MyOutputStream3 {
     }
 
     private void remapBuffer(long position) throws IOException {
-        f.setLength(position + bufferSize);
+        if (position + bufferSize > f.length()) {
+            f.setLength(f.length() * 2); // grow file to double size
+        }
         buf = f.getChannel().map(FileChannel.MapMode.READ_WRITE, position, bufferSize);
     }
 

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.SECONDS)
 public class MergeSortBenchmark {
     @Param({ "10000", "1000000" })
     private static int M;
@@ -22,7 +22,7 @@ public class MergeSortBenchmark {
     @Param({ "1000", "1000000" })
     private static int N;
 
-    @Param({ "100", "1000"})
+    @Param({ "3", "10", "20"})
     private static int d;
 
     @Param({"4194304"})
