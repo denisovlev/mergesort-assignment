@@ -13,6 +13,7 @@ public class MyOutputStream4 extends MyOutputStream3 {
     @Override
     public void create(String filename) throws IOException {
         f = new RandomAccessFile(filename, "rw");
+        f.setLength(Math.max(bufferSize, 1024 * 1024)); // start from min 1 MB
         remapBuffer(0);
     }
 

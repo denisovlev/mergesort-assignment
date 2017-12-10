@@ -3,7 +3,6 @@ package com.benchmark;
 import com.company.MergeSort;
 import com.company.factory.*;
 import com.company.streams.MyInputStream;
-import jdk.internal.util.xml.impl.Input;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
