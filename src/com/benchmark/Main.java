@@ -18,6 +18,10 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Running test");
+        File results = new File("results");
+        if (!results.exists()) {
+            results.mkdir();
+        }
 
         Options outputStreamTestConfig =
             new OptionsBuilder().include(com.benchmark.OutputStreamBenchmark.class.getSimpleName())
@@ -42,6 +46,9 @@ public class Main {
 
         new Runner(inputStreamTestConfig).run();
         renameResultsFile("input_stream_jmh_result.csv");
+
+        generateMergesortData(100000000);
+        generateMergesortData(250000000);
 
         Options mergeSortTestConfig =
             new OptionsBuilder().include(com.benchmark.MergeSortBenchmark.class.getSimpleName())
@@ -73,7 +80,7 @@ public class Main {
     }
 
     private static void generateMergesortData(int N) throws IOException {
-        MyOutputStream out = new MyOutputStream2();
+        MyOutputStream out = new MyOutputStream4();
         out.create(BenchmarkHelper.getFilename(N));
         for (int j = 0; j < N; j++) {
             out.write(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
