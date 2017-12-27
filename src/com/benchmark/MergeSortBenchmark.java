@@ -16,13 +16,13 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.SECONDS)
 public class MergeSortBenchmark {
-    @Param({"12500000", "6250000" })
+    @Param({"12697600", "6144000", "4096000" })
     private static int M;
 
-    @Param({ "100000000", "250000000"})
+    @Param({"250000000", "100000000"})
     private static int N;
 
-    @Param({ "2", "5", "10", "20"})
+    @Param({"2", "5", "10", "15", "20"})
     private static int d;
 
     @Param({"4194304"})

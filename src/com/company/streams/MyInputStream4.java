@@ -36,7 +36,7 @@ public class MyInputStream4 extends MyInputStream3 {
 
     private void remapBuffer(long position) throws IOException {
         long channelSize = channel.size() - position;
-        long size = channelSize < countInBytes(bufferSize) ? channelSize : countInBytes(bufferSize);
+        long size = channelSize < bufferSize ? channelSize : bufferSize;
         buf = channel.map(FileChannel.MapMode.READ_ONLY, position, size);
         buf.load();
     }

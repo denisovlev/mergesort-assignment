@@ -16,30 +16,32 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
+    public static final TimeValue TIMEOUT = TimeValue.hours(5);
+
     public static void main(String[] args) throws Exception {
         System.out.println("Running test");
-        File results = new File("results");
-        if (!results.exists()) {
-            results.mkdir();
-        }
+        initResultsFolder();
 
-        Options outputStreamTestConfig =
-            new OptionsBuilder().include(com.benchmark.OutputStreamBenchmark.class.getSimpleName())
-                .warmupIterations(1)
-                .measurementIterations(5)
-                .timeout(TimeValue.hours(4))
-                .resultFormat(ResultFormatType.CSV)
-                .forks(1)
-                .build();
+//        Options outputStreamTestConfig =
+//            new OptionsBuilder().include(com.benchmark.OutputStreamBenchmark.class.getSimpleName())
+//                .warmupIterations(1)
+//                .measurementIterations(5)
+//                .timeout(TIMEOUT)
+//                .resultFormat(ResultFormatType.CSV)
+//                .forks(1)
+//                .build();
+//
+//        new Runner(outputStreamTestConfig).run();
+//        renameResultsFile("output_stream_jmh_result.csv");
 
-        new Runner(outputStreamTestConfig).run();
-        renameResultsFile("output_stream_jmh_result.csv");
+        generateData(25000000, 20);
+        generateData(10000000, 20);
 
         Options inputStreamTestConfig =
             new OptionsBuilder().include(com.benchmark.InputStreamBenchmark.class.getSimpleName())
                 .warmupIterations(1)
                 .measurementIterations(5)
-                .timeout(TimeValue.hours(4))
+                .timeout(TIMEOUT)
                 .resultFormat(ResultFormatType.CSV)
                 .forks(1)
                 .build();
@@ -47,6 +49,7 @@ public class Main {
         new Runner(inputStreamTestConfig).run();
         renameResultsFile("input_stream_jmh_result.csv");
 
+        initResultsFolder();
         generateMergesortData(100000000);
         generateMergesortData(250000000);
 
@@ -54,13 +57,23 @@ public class Main {
             new OptionsBuilder().include(com.benchmark.MergeSortBenchmark.class.getSimpleName())
                 .warmupIterations(1)
                 .measurementIterations(5)
-                .timeout(TimeValue.hours(4))
+                .timeout(TIMEOUT)
                 .resultFormat(ResultFormatType.CSV)
                 .forks(1)
                 .build();
 
         new Runner(mergeSortTestConfig).run();
         renameResultsFile("merge_stream_jmh_result.csv");
+    }
+
+    private static void initResultsFolder() {
+        File results = new File("results");
+        if (!results.exists()) {
+            results.mkdir();
+        }
+        for(File file: results.listFiles())
+            if (!file.isDirectory())
+                file.delete();
     }
 
     private static void renameResultsFile(String pathname) {
@@ -70,7 +83,7 @@ public class Main {
     private static void generateData(int length, int nFiles) throws IOException {
         for (int i = 0; i < nFiles; i++) {
             String filename = BenchmarkHelper.kthFilename(length, i);
-            MyOutputStream out = new MyOutputStream4();
+            MyOutputStream out = new MyOutputStream2();
             out.create(filename);
             for (int j = 0; j < length; j++) {
                 out.write(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
