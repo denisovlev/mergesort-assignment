@@ -14,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.SECONDS)
 public class InputStreamBenchmark {
-    @Param({"100000", "10000000", "25000000"})
+    @Param({"25000000", "10000000"})
     private static int N;
 
-    @Param({"1", "2", "10", "20"})
+    @Param({"1", "5", "10", "15", "20"})
     private static int k;
 
-    @Param({"0", "4096", "16384", "4194304"})
+    @Param({"0", "8096", "16384", "4194304"})
     private static int B;
 
     @Benchmark

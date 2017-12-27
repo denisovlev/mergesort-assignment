@@ -9,4 +9,5 @@
 * src/com/company/Main - smoke tests
 
 run as:
+
 java -XX:-UseCompressedOops -jar ./mergesort-assignment.jar &> ./log.txt &
