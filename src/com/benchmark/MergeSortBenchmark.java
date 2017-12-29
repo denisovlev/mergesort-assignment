@@ -30,8 +30,8 @@ public class MergeSortBenchmark {
 
     @Benchmark
     public Object testMergeSort(Blackhole bh) throws IOException{
-        InputStreamFactory inputStreamFactory = new MyInputStream2Factory();
-        OutputStreamFactory outputStreamFactory = new MyOutputStream4Factory(B);
+        InputStreamFactory inputStreamFactory = new MyInputStream4Factory(B);
+        OutputStreamFactory outputStreamFactory = new MyOutputStream2Factory();
         Object o = runTest(inputStreamFactory, outputStreamFactory, M, d, N);
         bh.consume(o);
         return o;

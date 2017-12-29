@@ -34,20 +34,20 @@ public class Main {
 //        new Runner(outputStreamTestConfig).run();
 //        renameResultsFile("output_stream_jmh_result.csv");
 
-        generateData(25000000, 20);
-        generateData(10000000, 20);
-
-        Options inputStreamTestConfig =
-            new OptionsBuilder().include(com.benchmark.InputStreamBenchmark.class.getSimpleName())
-                .warmupIterations(1)
-                .measurementIterations(5)
-                .timeout(TIMEOUT)
-                .resultFormat(ResultFormatType.CSV)
-                .forks(1)
-                .build();
-
-        new Runner(inputStreamTestConfig).run();
-        renameResultsFile("input_stream_jmh_result.csv");
+//        generateData(25000000, 20);
+//        generateData(10000000, 20);
+//
+//        Options inputStreamTestConfig =
+//            new OptionsBuilder().include(com.benchmark.InputStreamBenchmark.class.getSimpleName())
+//                .warmupIterations(1)
+//                .measurementIterations(5)
+//                .timeout(TIMEOUT)
+//                .resultFormat(ResultFormatType.CSV)
+//                .forks(1)
+//                .build();
+//
+//        new Runner(inputStreamTestConfig).run();
+//        renameResultsFile("input_stream_jmh_result.csv");
 
         initResultsFolder();
         generateMergesortData(100000000);
