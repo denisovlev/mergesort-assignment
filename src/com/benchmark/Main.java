@@ -64,6 +64,19 @@ public class Main {
 
         new Runner(mergeSortTestConfig).run();
         renameResultsFile("merge_stream_jmh_result.csv");
+
+        Options mergeSortMemoryTestConfig =
+                new OptionsBuilder().include(com.benchmark.MergeSortMemoryBenchmark.class.getSimpleName())
+                        .warmupIterations(1)
+                        .measurementIterations(5)
+                        .timeout(TIMEOUT)
+                        .resultFormat(ResultFormatType.CSV)
+                        .forks(1)
+                        .jvmArgs("-Xms2048m", "-Xmx2048m")
+                        .build();
+
+        new Runner(mergeSortMemoryTestConfig).run();
+        renameResultsFile("merge_stream_memory_jmh_result.csv");
     }
 
     private static void initResultsFolder() {
